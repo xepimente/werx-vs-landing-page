@@ -7,10 +7,8 @@ import Banner from "./banner/Banner";
 const RegistrationPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [ voter, setVoter ] = useState({});
-  const [ logoData, setLogoData ] = useState({});
-
-  console.log("logoData", logoData);
+  const [voter, setVoter] = useState({});
+  const [logoData, setLogoData] = useState({});
 
   useEffect(() => {
     VoterDataServer.getRestaurantLogo({ restaurantId: id })
@@ -22,7 +20,7 @@ const RegistrationPage = () => {
           navigate("/invalid-restaurant");
         } else {
           setLogoData((prevData) => ({
-            ...response.data.data[0].logo[0]
+            ...response.data.data[0].logo[0],
           }));
         }
       })
@@ -37,11 +35,11 @@ const RegistrationPage = () => {
       .then((response) => {
         if (response.data && response.data.status === "200") {
           localStorage.setItem("voter", response.data.accessToken);
-          toast.success( response.data.message || "Successfully registered");
-          setTimeout(()=> {
+          toast.success(response.data.message || "Successfully registered");
+          setTimeout(() => {
             // navigate(`/review-product/${id}`);
             window.location.href = `/review-product/${id}`;
-          },2000)
+          }, 2000);
         } else {
           toast.error(`${response.data.message}`);
         }
@@ -53,7 +51,10 @@ const RegistrationPage = () => {
   };
   return (
     <div>
-      <Banner bannerHeader={logoData.bannerHeader} bannerDescription={logoData.bannerDescription} />
+      <Banner
+        bannerHeader={logoData.bannerHeader}
+        bannerDescription={logoData.bannerDescription}
+      />
       <div className="container mx-auto h-full p-10">
         <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800 dark:text-neutral-200">
           <div className="w-full">
@@ -64,14 +65,18 @@ const RegistrationPage = () => {
                   <div className="md:mx-6 md:p-12">
                     {/* <!--Logo--> */}
                     <div className="text-center">
-                      { logoData.image_url && <img
-                        className="mx-auto w-48"
-                        src={logoData.image_url}
-                        alt="logo"
-                      />}
-                      { logoData.title && <h4 className="mb-12 mt-1 pb-1 text-xl font-semibold">
-                        {logoData.title}
-                      </h4>}
+                      {logoData.image_url && (
+                        <img
+                          className="mx-auto w-48"
+                          src={logoData.image_url}
+                          alt="logo"
+                        />
+                      )}
+                      {logoData.title && (
+                        <h4 className="mb-12 mt-1 pb-1 text-xl font-semibold">
+                          {logoData.title}
+                        </h4>
+                      )}
                     </div>
 
                     <form>
@@ -79,18 +84,24 @@ const RegistrationPage = () => {
                       {/* <!--Username input--> */}
                       <div className="space-y-3">
                         <input
-                          onChange={(e) => setVoter((prevData) => ({
-                            ...prevData, name: e.target.value
-                          }))}
+                          onChange={(e) =>
+                            setVoter((prevData) => ({
+                              ...prevData,
+                              name: e.target.value,
+                            }))
+                          }
                           type="text"
                           label="Name"
                           placeholder="Name"
                           className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         />
                         <input
-                          onChange={(e) => setVoter((prevData) => ({
-                            ...prevData, email: e.target.value
-                          }))}
+                          onChange={(e) =>
+                            setVoter((prevData) => ({
+                              ...prevData,
+                              phone_number: e.target.value,
+                            }))
+                          }
                           type="text"
                           label="Phone Number"
                           placeholder="Phone Number"
@@ -98,9 +109,12 @@ const RegistrationPage = () => {
                         />
 
                         <input
-                          onChange={(e) => setVoter((prevData) => ({
-                            ...prevData, name: e.target.value
-                          }))}
+                          onChange={(e) =>
+                            setVoter((prevData) => ({
+                              ...prevData,
+                              email: e.target.value,
+                            }))
+                          }
                           type="email"
                           label="Email"
                           placeholder="Email"
@@ -137,9 +151,7 @@ const RegistrationPage = () => {
                     <h4 className="mb-6 text-xl font-semibold">
                       {logoData.sideHeader}
                     </h4>
-                    <p className="text-sm">
-                      {logoData.sideContent}
-                    </p>
+                    <p className="text-sm">{logoData.sideContent}</p>
                   </div>
                 </div>
               </div>
